@@ -7,7 +7,6 @@ words.createIndex("word");
 // List of words
 router.get("/", async (req, res) => {
   const wordsList = await words.find({});
-
   res.json(wordsList);
 });
 

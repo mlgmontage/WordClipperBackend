@@ -30,9 +30,20 @@ router.post("/create", async (req, res) => {
   }
 });
 
+// Complete/restore route
+router.post("/:id", async (req, res) => {
+  const id = req.params.id;
+  const isCompleted = req.body.isCompleted;
+  const updated = await words.findOneAndUpdate(
+    { _id: id },
+    { $set: { isCompleted } }
+  );
+  res.json(updated);
+});
+
 router.delete("/:id", async (req, res) => {
   const id = req.params.id;
-  deleted = await words.remove({ _id: id });
+  const deleted = await words.remove({ _id: id });
   res.json(deleted.deletedCount);
 });
 

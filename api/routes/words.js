@@ -6,13 +6,23 @@ words.createIndex("word");
 
 // List of words
 router.get("/", async (req, res) => {
-  const wordsList = await words.find({});
+  const wordsList = await words.find({ isCompleted: false });
+  res.json(wordsList);
+});
+
+// List of completed words
+router.get("/archive", async (req, res) => {
+  const wordsList = await words.find({ isCompleted: true });
   res.json(wordsList);
 });
 
 router.post("/create", async (req, res) => {
   const body = req.body;
-  if (body.word != undefined && body.description != undefined) {
+  if (
+    body.word != undefined &&
+    body.description != undefined &&
+    body.isCompleted != undefined
+  ) {
     const created = await words.insert(body);
     res.json(created);
   } else {

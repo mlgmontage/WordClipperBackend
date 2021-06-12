@@ -1,8 +1,6 @@
 const { Router } = require("express");
 const router = Router();
-const db = require("monk")("localhost/WordClipper");
-const words = db.get("words");
-words.createIndex("word");
+const words = require("../../connection");
 
 // List of words
 router.get("/", async (req, res) => {
@@ -34,10 +32,7 @@ router.post("/create", async (req, res) => {
 router.post("/:id", async (req, res) => {
   const id = req.params.id;
   const isCompleted = req.body.isCompleted;
-  const updated = await words.findOneAndUpdate(
-    { _id: id },
-    { $set: { isCompleted } }
-  );
+  const updated = await words.update({ _id: id }, { $set: { isCompleted } });
   res.json(updated);
 });
 
